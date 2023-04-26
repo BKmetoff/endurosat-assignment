@@ -5,11 +5,12 @@ RUN mkdir app
 WORKDIR /app
 COPY requirements.txt /app
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt && \
+  apk update && \
+  apk add bash && \
+  apk add vim
 
 COPY . /app
-
-RUN pip install flask
 
 EXPOSE 8000
 
