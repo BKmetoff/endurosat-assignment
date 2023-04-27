@@ -1,4 +1,4 @@
-def test_index(app, client):
+def test_index(client):
     response = client.get("/")
     assert response.status_code == 200
 
