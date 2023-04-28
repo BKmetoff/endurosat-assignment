@@ -6,17 +6,19 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Authenticate in AWS
+      - name: Configure credentials for AWS
         uses: aws-actions/configure-aws-credentials@v2
         with:
+          role-to-assume: arn:aws:iam::936892409162:role/github-actions-BKmetoff-endurosat-assignment
           aws-region: eu-west-1
-          role-to-assume: arn:aws:iam::936892409162:role/github-actions-bkmetoff-endurosat-assignment-infra
-          role-session-name: BuildAndPushDockerImage
 
       - name: Login to AWS ECR
         id: login-ecr
