@@ -1,6 +1,7 @@
 name: runs-tests-and-linter
 
-on: push
+on:
+  workflow_call:
 
 jobs:
   build:
