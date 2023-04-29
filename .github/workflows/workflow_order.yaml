@@ -17,3 +17,6 @@ jobs:
     needs: run_tests_and_linter
     if: ${{ success() }}
     uses: ./.github/workflows/build-and-push-dk-image.yaml
+    permissions:
+      id-token: write
+      contents: read
