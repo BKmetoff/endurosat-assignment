@@ -5,7 +5,8 @@ RUN mkdir app
 WORKDIR /app
 COPY requirements.txt /app
 
-RUN pip3 install -r requirements.txt && \
+RUN pip install --upgrade pip && \
+  pip3 install -r requirements.txt && \
   apk update && \
   apk add bash && \
   apk add vim
