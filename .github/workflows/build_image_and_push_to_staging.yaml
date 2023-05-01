@@ -18,7 +18,7 @@ jobs:
       - name: Configure credentials for AWS
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::936892409162:role/github-actions-BKmetoff-endurosat-assignment
+          role-to-assume: arn:aws:iam::936892409162:role/gh-actions-BKmetoff-endurosat-assignment
           aws-region: eu-west-1
 
       - name: Login to AWS ECR
