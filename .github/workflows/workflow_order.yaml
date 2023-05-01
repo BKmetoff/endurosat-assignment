@@ -16,7 +16,7 @@ jobs:
   build_image_and_push_to_staging:
     needs: run_tests_and_linter
     if: ${{ success() }}
-    uses: ./.github/workflows/build_image_and_push_to_staging.yaml
+    uses: ./.github/workflows/staging_build_and_push.yaml
     permissions:
       id-token: write
       contents: read
