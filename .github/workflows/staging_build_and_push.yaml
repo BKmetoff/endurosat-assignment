@@ -1,4 +1,7 @@
-name: Build and upload Docker image to AWS ECR
+name: Build and upload Docker image to AWS ECR staging
+
+# Build image and push to staging
+# If runs-tests-and-linter.yaml has run successfully
 
 on:
   workflow_call:
