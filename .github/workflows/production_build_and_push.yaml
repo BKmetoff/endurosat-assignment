@@ -1,11 +1,16 @@
-name: Build and upload Docker image to AWS ECR
+name: Build and upload Docker image to AWS ECR production
+
+# Build image and push to production
+# when PRs are merged to 'master'
 
 on:
-  workflow_call:
+  pull_request:
+    types:
+      - closed
 
 jobs:
-  deploy:
-    name: Deploy
+  if_merged:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -18,7 +23,7 @@ jobs:
       - name: Configure credentials for AWS
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::936892409162:role/github-actions-BKmetoff-endurosat-assignment
+          role-to-assume: arn:aws:iam::936892409162:role/gh-actions-BKmetoff-endurosat-assignment
           aws-region: eu-west-1
 
       - name: Login to AWS ECR
@@ -30,9 +35,10 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: endurosat-assignment
           IMAGE_TAG: latest
+          ENVIRONMENT: production
         run: |
           echo '\n\n=== Building image ===\n\n'
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker build -t $REGISTRY/$REPOSITORY-$ENVIRONMENT:$IMAGE_TAG .
           echo '\n\n=== Pushing image ===\n\n'
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$REPOSITORY-$ENVIRONMENT:$IMAGE_TAG
           echo '\n\n=== Image pushed ==='
