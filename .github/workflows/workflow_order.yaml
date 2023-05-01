@@ -13,10 +13,10 @@ jobs:
   run_tests_and_linter:
     uses: ./.github/workflows/runs-tests-and-linter.yaml
 
-  build_and_push_image:
+  build_image_and_push_to_staging:
     needs: run_tests_and_linter
     if: ${{ success() }}
-    uses: ./.github/workflows/build-and-push-dk-image.yaml
+    uses: ./.github/workflows/build_image_and_push_to_staging.yaml
     permissions:
       id-token: write
       contents: read
