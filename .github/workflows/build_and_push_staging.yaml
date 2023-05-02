@@ -1,16 +1,14 @@
-name: Build and upload Docker image to AWS ECR production
+name: Build and upload Docker image to AWS ECR staging
 
-# Build image and push to production
-# when PRs are merged to 'master'
+# Build image and push to staging
+# If runs-tests-and-linter.yaml has run successfully
 
 on:
-  pull_request:
-    types:
-      - closed
+  workflow_call:
 
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
+  deploy:
+    name: Deploy to staging
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -18,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Configure credentials for AWS
         uses: aws-actions/configure-aws-credentials@v2
@@ -35,7 +33,7 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: endurosat-assignment
           IMAGE_TAG: latest
-          ENVIRONMENT: production
+          ENVIRONMENT: staging
         run: |
           echo '\n\n=== Building image ===\n\n'
           docker build -t $REGISTRY/$REPOSITORY-$ENVIRONMENT:$IMAGE_TAG .

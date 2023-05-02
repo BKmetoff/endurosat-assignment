@@ -1,0 +1,48 @@
+name: Updates the AWS ECS cluster for the respective environment once a new Docker image has been updated to ECR.
+
+on:
+  workflow_call:
+    secrets:
+      ENVIRONMENT:
+        required: true
+      REGION:
+        required: true
+
+# The 'ENVIRONMENT' and 'REGION' env vars
+# in the 'Update ECS service' step
+# are passed down from 'ci_staging.yaml'
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Wait for ECR image scan to complete
+        run: sleep 30s
+        shell: bash
+
+      - name: Configure credentials for AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        id: aws-auth
+        with:
+          role-to-assume: arn:aws:iam::936892409162:role/gh-actions-BKmetoff-endurosat-assignment
+          aws-region: eu-west-1
+
+      - name: Update ECS service
+        env:
+          ACCOUNT_ID: ${{ steps.aws-auth.outputs.aws-account-id }}
+          REPOSITORY: endurosat-assignment
+          ENVIRONMENT: ${{secrets.ENVIRONMENT}}
+          REGION: ${{secrets.REGION}}
+        run: |
+          aws ecs update-service \
+          --cluster arn:aws:ecs:${REGION}:${ACCOUNT_ID}:cluster/${REPOSITORY}-${ENVIRONMENT} \
+          --service arn:aws:ecs:${REGION}:${ACCOUNT_ID}:service/${REPOSITORY}-${ENVIRONMENT}/${REPOSITORY}-${ENVIRONMENT}-service \
+          --force-new-deployment
