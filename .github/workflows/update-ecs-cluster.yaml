@@ -2,12 +2,13 @@ name: Update AWS ECS cluster for the respective environment once a new Docker im
 
 on:
   workflow_call:
+    secrets:
+      ENVIRONMENT:
+        required: true
 
 # The 'ENVIRONMENT' env var
 # in the 'Update ECS service' step
 # is passed down from 'workflow_order.yaml'
-env:
-  ENVIRONMENT: ${{ ENVIRONMENT }}
 
 jobs:
   deploy:
@@ -25,14 +26,14 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         id: aws-auth
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/gh-actions-BKmetoff-endurosat-assignment
+          role-to-assume: arn:aws:iam::936892409162:role/gh-actions-BKmetoff-endurosat-assignment
           aws-region: eu-west-1
 
       - name: Update ECS service
         env:
           ACCOUNT_ID: ${{ steps.aws-auth.outputs.aws-account-id }}
           REPOSITORY: endurosat-assignment
-          ENVIRONMENT: ${{env.ENVIRONMENT}}
+          ENVIRONMENT: ${{secrets.ENVIRONMENT}}
           REGION: eu-west-1
         run: |
           aws ecs update-service \
