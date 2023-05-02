@@ -1,4 +1,4 @@
-name: Update AWS ECS cluster for the respective environment once a new Docker image has been updated to ECR.
+name: Updates the AWS ECS cluster for the respective environment once a new Docker image has been updated to ECR.
 
 on:
   workflow_call:
@@ -10,7 +10,7 @@ on:
 
 # The 'ENVIRONMENT' and 'REGION' env vars
 # in the 'Update ECS service' step
-# are passed down from 'workflow_order.yaml'
+# are passed down from 'ci_staging.yaml'
 
 jobs:
   deploy:
@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Wait for ECR image scan to complete
         run: sleep 30s
