@@ -6,6 +6,8 @@ on:
 # The 'ENVIRONMENT' env var
 # in the 'Update ECS service' step
 # is passed down from 'workflow_order.yaml'
+env:
+  ENVIRONMENT: ${{ ENVIRONMENT }}
 
 jobs:
   deploy:
