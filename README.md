@@ -54,9 +54,7 @@ There are two workflows described in `/.githib/workflows`:
 
 The full flow of the pipeline is as follows:
 
-![](./docs/ci-pipeline.png)
-
----
+![](./docs/CI-pipeline.png)
 
 ## The infrastructure
 
@@ -69,8 +67,6 @@ The CI pipeline relies on AWS cloud infrastructure to be deployed. The required 
   - the AWS IAM role that's assumed by the OIDC token must be hardcoded into `.github/workflows/update-ecs-cluster.yaml`;
   - the AWS account id must be stored as a [GitHub secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets);
   - the correct AWS region must be added as an environment variable in `.github/workflows/ci-production.yaml` and `.github/workflows/ci-staging.yaml`
-
----
 
 ## Room for improvement:
 
