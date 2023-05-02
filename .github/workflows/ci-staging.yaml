@@ -1,4 +1,4 @@
-name: CI
+name: CI pipeline for Staging
 
 env:
   ENVIRONMENT: staging
@@ -19,12 +19,12 @@ jobs:
   build_image_and_push_to_staging:
     needs: run_tests_and_linter
     if: ${{ success() }}
-    uses: ./.github/workflows/staging_build_and_push.yaml
+    uses: ./.github/workflows/build_and_push_staging.yaml
     permissions:
       id-token: write
       contents: read
 
-  update_ecs_cluster:
+  update_staging_ecs_cluster:
     needs: build_image_and_push_to_staging
     if: ${{ success() }}
     uses: ./.github/workflows/update-ecs-cluster.yaml
