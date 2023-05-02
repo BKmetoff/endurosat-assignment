@@ -20,3 +20,13 @@ jobs:
     permissions:
       id-token: write
       contents: read
+
+  update_ecs_cluster:
+    needs: build_image_and_push_to_staging
+    if: ${{ success() }}
+    uses: ./.github/workflows/update-ecs-cluster.yaml
+    with:
+      ENVIRONMENT: staging
+    permissions:
+      id-token: write
+      contents: read
