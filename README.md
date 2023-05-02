@@ -38,19 +38,22 @@ GitHub actions were chosen for the pipeline tool(s) for the following reasons:
 
 There are two workflows described in `/.githib/workflows`:
 
-- on each new commit made to a PR branch:
+1. on each new commit made to a PR branch:
+
 - merging to the master branch is blocked;
 - the application is:
   - tested;
-  - build into a docker image
-  - pushed to AWS ECR;
-  - deployed in an AWS ECS ;
-- once the above flow runs successfully:
+  - built into a docker image;
+  - pushed to AWS ECR-staging;
+  - deployed in an AWS ECS-staging;
+
+2. once the above flow runs successfully:
+
 - merging to the master branch is allowed;
 - on merge to the master branch:
   - docker image is build;
-  - the image is pushed to AWS ECR;
-  - the image is deployed in an AWS ECS;
+  - the image is pushed to AWS ECR-production;
+  - the image is deployed in an AWS ECS-production;
 
 The full flow of the pipeline is as follows:
 
