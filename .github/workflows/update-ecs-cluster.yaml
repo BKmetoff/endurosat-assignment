@@ -5,8 +5,10 @@ on:
     secrets:
       ENVIRONMENT:
         required: true
+      REGION:
+        required: true
 
-# The 'ENVIRONMENT' and 'REGIONS' env vars
+# The 'ENVIRONMENT' and 'REGION' env vars
 # in the 'Update ECS service' step
 # are passed down from 'workflow_order.yaml'
 
