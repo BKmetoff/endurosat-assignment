@@ -6,9 +6,9 @@ on:
       ENVIRONMENT:
         required: true
 
-# The 'ENVIRONMENT' env var
+# The 'ENVIRONMENT' and 'REGIONS' env vars
 # in the 'Update ECS service' step
-# is passed down from 'workflow_order.yaml'
+# are passed down from 'workflow_order.yaml'
 
 jobs:
   deploy:
@@ -22,6 +22,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Wait for ECR image scan to complete
+        run: sleep 30s
+        shell: bash
+
       - name: Configure credentials for AWS
         uses: aws-actions/configure-aws-credentials@v2
         id: aws-auth
@@ -34,7 +38,7 @@ jobs:
           ACCOUNT_ID: ${{ steps.aws-auth.outputs.aws-account-id }}
           REPOSITORY: endurosat-assignment
           ENVIRONMENT: ${{secrets.ENVIRONMENT}}
-          REGION: eu-west-1
+          REGION: ${{secrets.REGION}}
         run: |
           aws ecs update-service \
           --cluster arn:aws:ecs:${REGION}:${ACCOUNT_ID}:cluster/${REPOSITORY}-${ENVIRONMENT} \
